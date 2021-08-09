@@ -32,23 +32,11 @@ struct AstronautView: View {
     }
     
     init(astronaut: Astronaut) {
-        self.astronaut = astronaut
-        
         let missions: [Mission] = Bundle.main.decode("missions.json")
+        let matches = missions.filter { $0.crewNames.contains(astronaut.id) }
         
-        var matches = [String]()
-        
-        // filter missions with
-        for mission in missions {
-            for crew in mission.crew {
-                if crew.name == astronaut.id {
-                    matches.append(String(mission.id))
-                    break
-                }
-            }
-        }
-        
-        self.missions = matches.joined(separator: ", ")
+        self.missions = matches.map { $0.displayName }.joined(separator: ", ")
+        self.astronaut = astronaut
     }
 }
 
